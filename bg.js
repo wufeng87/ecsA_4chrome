@@ -12,8 +12,8 @@ function replaceIframeSrc(info, tab) {
   //   console.log("Background page responded: " + response);
   // });
 
-  // active: true, currentWindow: true
-  chrome.tabs.query({}, function(tabs){
+  // 
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     tabs.forEach(tab => {
       chrome.tabs.sendMessage(tab.id, {action: "open_replaced_fssc_iframe"}, function(response) {
         
@@ -22,6 +22,15 @@ function replaceIframeSrc(info, tab) {
      
   });
 
+}
+function sendMsgToContent(action) {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, {action}, function(response) {
+        
+      }); 
+    })
+  });
 }
 
 // chrome.tabs.executeScript(tab.id, {file: "content.js"}, function() {
@@ -32,6 +41,11 @@ function replaceIframeSrc(info, tab) {
 // });
 
 chrome.contextMenus.create({"title": 'replace iframe src', "contexts":['page'], "onclick": replaceIframeSrc});
+
+function reviewAddComment() {
+  sendMsgToContent('reviewAddComment')
+}
+chrome.contextMenus.create({"title": 'review add @ and comment', "contexts":['page'], "onclick": reviewAddComment});
 
 // Create one test item for each context type.
 // var contexts = ["page","selection","link","editable","image","video",

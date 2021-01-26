@@ -1,7 +1,6 @@
-console.log("Got content.js")
 
 // 配置本地端口
-let port = 8086
+let port = 8087 // 配置成一个port数组，多菜单
 let localhost = `http://localhost:${port}`
 
 chrome.runtime.onMessage.addListener(function(msg, _, sendResponse) {
@@ -13,8 +12,9 @@ chrome.runtime.onMessage.addListener(function(msg, _, sendResponse) {
   
 });
 
-chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
+  // TODO 会同时打开两个，排除控制台或fssc其一
   if (msg.action == 'open_replaced_fssc_iframe') {
     // alert("Message recieved!");
     let oldHref = location.href;
@@ -23,6 +23,11 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
       let newHref = localhost + '/#/' + hrefSplits[1];
       console.log(newHref);
       window.open(newHref, '_blank');
+    }
+  } else if (msg.action === 'reviewAddComment') {
+    let _input = document.getElementById('note-body')
+    if (_input) {
+      _input.value = window.ECSA_REVIEW_MEMBERS || '111 @xiemh @leid @wangshn 请走查'
     }
   }
 });

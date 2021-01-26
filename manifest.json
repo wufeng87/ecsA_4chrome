@@ -14,7 +14,7 @@
   ],
   "content_scripts": [ {
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["yncontent.js"],
+    "js": ["yncontent.js", "config.js"],
     "all_frames": true
   }],
   "manifest_version": 2
